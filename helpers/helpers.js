@@ -2,7 +2,7 @@ import { APP_API_BASE_URL, SONG_API_BASE } from '../app/config.js';
 
 // callback to run after image file is uploaded
 export function previewFile() {
-  const preview = document.querySelector('img');
+  const preview = document.querySelector('#upload-preview');
   const file = document.querySelector('input[type=file]').files[0];
   const reader = new FileReader();
 
@@ -37,20 +37,34 @@ export function previewFile() {
 }
 
 // callback for submit event - function to retrieve info from API
-async function getRelations(encodedImg) {
+async function getRelations(base64Img) {
   // get clarifai results
-  const relationsList = await getClarifaiResults(encodedImg);
-  console.log(relationsList);
-  const firstTerm = relationsList[0].association;
+  const relatedWordList = await getClarifaiResults(base64Img);
 
-  // get related song results
-  const songsResults = await getPlaylist(firstTerm);
+  console.log('Relationships from Clarifai');
+  console.log(relatedWordList);
 
-  const songsList = songsResults.playlist;
-  const queryInfo = songsResults.info;
+  // take first result from clarifai
+  const choice = Math.floor(Math.random() * relatedWordList.length);
+  console.log(choice);
+  const searchTerm = relatedWordList[choice].association;
+
+  const keytermContainer = document.querySelector('#keyterm--container');
+  keytermContainer.classList.add('show');
+  keytermContainer.classList.remove('hide');
+
+  const keyterm = document.querySelector('#keyterm');
+  keyterm.innerText = searchTerm;
+
+  const songResults = await getSongSuggestions(searchTerm);
+
+  console.log('Results from SongAPI:');
+  console.log(songResults);
+
+  const { playlist, info } = songResults;
 
   // render to dom
-  updateDom(songsList, firstTerm, queryInfo);
+  updateDom(playlist, info);
 }
 
 // send clarifai base64 encoded img and get back list of relations
@@ -76,20 +90,16 @@ async function getClarifaiResults(encodedImg) {
   return apiResponse.relations;
 }
 
-async function getPlaylist(name) {
-  const url = `${SONG_API_BASE}/song/`;
-  const method = 'GET';
-  console.log(`API METHOD: ${method}`);
-  console.log(`API URL: ${url}`);
-  const data = {
-    name
-  };
+// get playList from SongAPI
+async function getSongSuggestions(name) {
   const apiResponse = await $.ajax({
-    url,
-    method,
-    data,
+    url: `${SONG_API_BASE}/song/`,
+    method: 'GET',
+    data: {
+      name
+    },
     error: () => {
-      console.log('Error sending base64 image to API!');
+      console.log('Error obtaining info from SongAPI');
     }
   });
 
@@ -97,12 +107,15 @@ async function getPlaylist(name) {
 }
 
 // update Front End with results
-function updateDom(playlist, keyterm, queryInfo) {
-  console.log(keyterm);
-  console.log(playlist);
-  console.log(` Query Tag by jon: ${queryInfo}`);
-
+function updateDom(playlist, info) {
   // add code to send Query Info to Dom
+
+  const queryTerm = document.querySelector('#queryterm--container');
+  queryTerm.classList.add('show');
+  queryTerm.classList.remove('hide');
+
+  const queryterm = document.querySelector('#queryterm');
+  queryterm.innerText = info;
 
   const maxLength = playlist.length > 5 ? 5 : playlist.length;
   for (let i = 0; i < maxLength; i++) {
@@ -112,6 +125,7 @@ function updateDom(playlist, keyterm, queryInfo) {
   }
 }
 
+// render individual song to DOM
 function renderSongToDOM(song, artist, albumUrl) {
   // const $songsContainer = $('#songs-container');
 
@@ -119,26 +133,35 @@ function renderSongToDOM(song, artist, albumUrl) {
   songContainerEl.classList.add('show');
 
   const songDiv = document.createElement('div');
-  songDiv.classList.add('row', 'py-2', 'border', 'align-items-center');
+  songDiv.classList.add(
+    'row',
+    'my-2',
+    'py-2',
+    'border',
+    'align-items-center',
+    'song--container'
+  );
 
   const titleSpan = document.createElement('span');
-  titleSpan.classList.add('col-9', 'h4');
+  titleSpan.classList.add('col-8', 'h4');
   titleSpan.innerText = `${song}`;
 
   const albumDiv = document.createElement('div');
-  albumDiv.classList.add('col-3', 'row', 'justify-content-end');
-
-  // image Element
-  const imageEl = document.createElement('img');
-  imageEl.setAttribute('src', albumUrl);
+  albumDiv.classList.add('col-4', 'row', 'justify-content-end');
 
   // artist name div
   const artistDiv = document.createElement('div');
+  artistDiv.classList.add('text-center', 'mr-1');
   artistDiv.innerText = artist;
 
+  // image Element
+  const imageEl = document.createElement('img');
+  imageEl.classList.add('album--art', 'mr-1');
+  imageEl.setAttribute('src', albumUrl);
+
   // append both to albumDiv
-  albumDiv.appendChild(imageEl);
   albumDiv.appendChild(artistDiv);
+  albumDiv.appendChild(imageEl);
 
   // append title and album info to songDiv
   songDiv.appendChild(titleSpan);

@@ -1,3 +1,6 @@
+/* BootStrap Overrides */
+
+/* Body Wide Overrides */
 .show {
   transition: opacity 400ms;
 }
@@ -5,3 +8,21 @@
 .hide {
   opacity: 0;
 }
+
+/* Album Containers CSS */
+/* .album--art {
+  max-height: 64px;
+} */
+
+#upload-preview {
+  max-height: 15vw;
+  max-width: 15vw;
+}
+
+.song--container {
+  height: 120px;
+}
+
+/* #upload--column {
+  background-color: pink;
+} */

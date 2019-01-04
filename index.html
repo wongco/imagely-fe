@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Image Conversion-ly!</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
     <link
     href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.3/darkly/bootstrap.min.css"
@@ -14,49 +15,66 @@
   />
     <link rel="stylesheet" href="style.css">
   </head>
-  <body class="container">
+  <body class="container-fluid">
     <!-- Navigation Bar -->
     <nav
-      class="navbar navbar-light bg-light mb-5 rounded-bottom"
+      class="navbar navbar-expand-lg navbar-light bg-light mb-5 rounded-bottom"
       id="answer-form"
     >
-      <a class="navbar-brand ml-3" href="#"> Image Mood Music Suggestions! </a>
-      <ul class="navbar-nav">
-        <li class="nav-item ml-4" id="user-dialogue"></li>
-      </ul>
-      <ul class="navbar-nav">
-        <li class="nav-item ml-4" id="computer-dialogue"></li>
-      </ul>
+      <span  class="navbar-brand ml-3" href="#"> ImageMoo! </span>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarText"
+        aria-controls="navbarText"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+        </ul>
+        <span class="navbar-text">Designed by WongCo</span>
+      </div>
     </nav>
-    <div class="container row">
-      <div class="col-4">
+
+    <div class="row mx-2 justify-content-center">
+      <!-- Picture Upload Column -->
+      <div class="col-12 col-md-4" id='upload--column'>
         <div id='upload--container'>
-          <h4>Please take/upload a picture!</h4>
+          <div class="h4">Please take/upload a picture!</div>
           <input type="file" id="file--input" /><br />
-          <div id="preview--container" class="hide">
-            <img src="" width="200" alt="Image preview..." /><br />
-            <h4>Ready to submit picture?</h4>
-            <button class="button" type="button" id="upload--submit">Submit</button>
-          </div>
+        </div>
+        <div class="h4 py-2 mt-2 hide" id="keyterm--container">Mood Word: <span id="keyterm"></span></div>
+        <div class="h4 py-2 hide" id="queryterm--container">Results: <span id="queryterm"></span></div>
+      </div>
+      
+      <div class="col-12 col-md-4">
+        <div id="preview--container" class="hide">
+          <h4>Ready to submit picture?</h4>
+          <img class="py-2" src="" width="200" alt="Image preview..." id="upload-preview"/><br />
+          <button class="btn btn-success py-1" type="button" id="upload--submit">Get me some music!</button>
         </div>
       </div>
-      <div class="col-7" id='songs-container'>
-        <!-- <div class="row py-2 my-2 border align-items-center">
-          <span class="col-9 h4">"I Couldn't Be More In Love"</span>
-          <div class="col-3 row justify-content-end">
-            <img src="https://i.scdn.co/image/d4d8adb87c1b6f343355befe7251ab2f81b6ab17" alt="Album Art">
-            <div>
-                Madeleine Peyroux
-            </div>
+
+      <!-- SongList Column -->
+      <div class="col-12 col-md-6" id='songs-container'>
+        <!-- Begin List of Individual Songs -->
+        <!-- <div class="row py-2 my-2 border align-items-center song--container">
+          <span class="col-8 h4">"I Couldn't Be More In Love"</span>
+          <div class="col-4 row justify-content-end">
+            <div class="text-center mr-1">Madeleine Peyroux</div>
+            <img class="album--art mr-1" src="https://i.scdn.co/image/d4d8adb87c1b6f343355befe7251ab2f81b6ab17" alt="Album Art">
           </div>
         </div> -->
       </div>
     </div>
-    <script
-      src="https://code.jquery.com/jquery-3.3.1.min.js"
-      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
     <script type="module" src="./app/app.js"></script>
   </body>
 </html>
