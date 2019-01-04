@@ -70,7 +70,6 @@ async function getRelations(base64Img) {
 // send clarifai base64 encoded img and get back list of relations
 async function getClarifaiResults(encodedImg) {
   console.log(`Sending stuff to ${APP_API_BASE_URL} via AJAX:`);
-  console.log(encodedImg);
 
   const url = `${APP_API_BASE_URL}/images/`;
   const method = 'POST';
