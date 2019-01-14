@@ -45,7 +45,8 @@ async function getRelations(base64Img) {
   console.log(relatedWordList);
 
   // take first result from clarifai
-  const choice = Math.floor(Math.random() * relatedWordList.length);
+  // const choice = Math.floor(Math.random() * relatedWordList.length);
+  const choice = 0;
   console.log(choice);
   const searchTerm = relatedWordList[choice].association;
 
